@@ -36,7 +36,7 @@ def traer_datos(sql):
     conexion.close()
     datos_json = [dict(zip([column[0] for column in cursor.description], fila)) for fila in datos]
     datos_json_str = json.dumps(datos_json)
-    return datos_json_str
+    return datos_json
 
 @app.get("/")
 async def raiz():
