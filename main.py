@@ -40,7 +40,7 @@ def traer_datos(sql):
 
 @app.get("/")
 async def raiz():
-    return "Hola"
+    return "Backend de Python + Fastapi + SQLite"
 
 class LoginData(BaseModel):
     username: str
