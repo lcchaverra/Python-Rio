@@ -1,7 +1,21 @@
+# import sqlite3
 #pip install -r requirements.txt
 #py -m pip
 # uvicorn main:app --reload
 # import datetime as dt
+
+# def peticiones(sql):
+#     conexion = sqlite3.connect("netflix.db")
+#     cursor = conexion.cursor()
+#     cursor.execute(str(sql))
+#     conexion.commit()
+#     conexion.close()
+
+# conexion = sqlite3.connect("netflix.db")
+# cursor = conexion.cursor()
+# cursor.execute('INSERT INTO usuarios (id, usuario, contraseña) VALUES(4, "josser@gmail.com", "123456")')
+# conexion.commit()
+# conexion.close()
 
 # @app.post("/login")
 # async def validar_datos(request: Request):

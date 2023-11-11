@@ -27,13 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def peticiones(sql):
-    conexion = sqlite3.connect("netflix.db")
-    cursor = conexion.cursor()
-    cursor.execute(str(sql))
-    conexion.commit()
-    conexion.close()
-
 def traer_datos(sql):
     conexion = sqlite3.connect("netflix.db")
     cursor = conexion.cursor()
@@ -76,4 +69,15 @@ async def listado_usuarios():
 async def usuario_id(user_id : str | None = None):
     if user_id is not None:
         datos = traer_datos("SELECT * FROM usuarios WHERE id ="+ user_id+"")
+    return datos
+
+@app.get("/movies")
+async def listado_peliculas():
+    datos = traer_datos("SELECT * FROM peliculas")
+    return datos
+
+@app.get("/movies/{movie_id}")
+async def pelicula_id(movie_id : str | None = None):
+    if movie_id is not None:
+        datos = traer_datos("SELECT * FROM peliculas WHERE id ="+ movie_id+"")
     return datos
