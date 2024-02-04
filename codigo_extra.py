@@ -158,3 +158,32 @@
 # async def bd_data():
 #     result = consultar("select * from users")
 #     return result
+
+
+# @app.get("/movies")
+# async def listado_peliculas():
+#     datos = traer_datos("SELECT * FROM peliculas")
+#     return datos
+
+# @app.get("/movies/{movie_id}")
+# async def pelicula_id(movie_id : str | None = None):
+#     if movie_id is not None:
+#         datos = traer_datos("SELECT * FROM peliculas WHERE id ="+ movie_id+"")
+#     return datos
+
+# def traer_datos(sql):
+#     conexion = sqlite3.connect("netflix.db")
+#     cursor = conexion.cursor()
+#     cursor.execute(str(sql))
+#     datos = cursor.fetchall()
+#     conexion.commit()
+#     conexion.close()
+#     datos_json = [dict(zip([column[0] for column in cursor.description], fila)) for fila in datos]
+#     datos_json_str = json.dumps(datos_json)
+#     return datos_json
+
+# @app.get("/users/{user_id}")
+# async def usuario_id(user_id : str | None = None):
+#     if user_id is not None:
+#         datos = traer_datos("SELECT * FROM usuarios WHERE id ="+ user_id+"")
+#     return datos

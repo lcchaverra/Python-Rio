@@ -7,6 +7,7 @@ import json
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 from pydantic import BaseModel
+import random as random
 
 app = fastapi.FastAPI()
 
@@ -16,6 +17,8 @@ origins = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:5500",
     "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173/register",
+    "http://127.0.0.1:5173/login",
     "http://localhost:5173",
 ]
 
@@ -26,17 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-def traer_datos(sql):
-    conexion = sqlite3.connect("netflix.db")
-    cursor = conexion.cursor()
-    cursor.execute(str(sql))
-    datos = cursor.fetchall()
-    conexion.commit()
-    conexion.close()
-    datos_json = [dict(zip([column[0] for column in cursor.description], fila)) for fila in datos]
-    datos_json_str = json.dumps(datos_json)
-    return datos_json
 
 @app.get("/")
 async def raiz():
@@ -60,24 +52,17 @@ async def login(data: LoginData):
     else:
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
 
-@app.get("/users")
-async def listado_usuarios():
-    datos = traer_datos("SELECT * FROM usuarios")
-    return datos
-
-@app.get("/users/{user_id}")
-async def usuario_id(user_id : str | None = None):
-    if user_id is not None:
-        datos = traer_datos("SELECT * FROM usuarios WHERE id ="+ user_id+"")
-    return datos
-
-@app.get("/movies")
-async def listado_peliculas():
-    datos = traer_datos("SELECT * FROM peliculas")
-    return datos
-
-@app.get("/movies/{movie_id}")
-async def pelicula_id(movie_id : str | None = None):
-    if movie_id is not None:
-        datos = traer_datos("SELECT * FROM peliculas WHERE id ="+ movie_id+"")
-    return datos
+@app.post("/create")
+async def crear_usuario(data: LoginData):
+    username = data.username
+    password = data.password
+    id = random.randint(1, 100)
+    cursor = conexion.cursor()
+    try:
+        cursor.execute('INSERT INTO usuarios (id, usuario, contraseña) VALUES(?,?,?)', (id, username, password))
+        conexion.commit()
+        return {"status": "success", "message": "nuevo_usuario creado"}
+    except:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    finally:
+        conexion.close()
