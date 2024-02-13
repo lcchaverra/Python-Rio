@@ -17,6 +17,7 @@ origins = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:5500",
     "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173/home",
     "http://127.0.0.1:5173/register",
     "http://127.0.0.1:5173/login",
     "http://127.0.0.1:5173/Register",
@@ -45,14 +46,13 @@ class ShopData(BaseModel):
     email: str
     phone: str
     address: str
-    count: str
-    total: str
+    count: float
+    total: float
 
 @app.post("/login")
 async def login(data: LoginData):
     username = data.username
     password = data.password
-
     cursor = conexion.cursor()
     cursor.execute("SELECT contraseña FROM usuarios WHERE usuario=?", (username,))
     resultado = cursor.fetchone()
@@ -74,8 +74,8 @@ async def crear_usuario(data: LoginData):
         return {"status": "success", "message": "nuevo_usuario creado"}
     except:
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-    finally:
-        conexion.close()
+    # finally:
+        # conexion.close()
 
 @app.post("/complete_shopping")
 async def completar_compra(data: ShopData):
@@ -87,10 +87,10 @@ async def completar_compra(data: ShopData):
     total = data.total
     cursor = conexion.cursor()
     try:
-        cursor.execute('INSERT INTO pedidos (username, email, phone, address, artsCount, total) VALUES(?,?,?,?,?,?)', (username, email, phone, address, count, total))
+        cursor.execute('INSERT INTO pedidos (username, email, phone, address, count, total) VALUES(?,?,?,?,?,?)', (username, email, phone, address, count, total))
         conexion.commit()
         return {"status": "success", "message": "compra realizada"}
     except:
         raise HTTPException(status_code=401, detail="no se pudo realizar la compra")
-    finally:
-        conexion.close()
+    # finally:
+        # conexion.close()
