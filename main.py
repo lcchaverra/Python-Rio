@@ -14,16 +14,7 @@ app = fastapi.FastAPI()
 conexion = sqlite3.connect("netflix.db")
 
 origins = [
-    "https://choki-art.netlify.app/",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:5500",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:5173/home",
-    "http://127.0.0.1:5173/register",
-    "http://127.0.0.1:5173/login",
-    "http://127.0.0.1:5173/Register",
-    "http://127.0.0.1:5173/Login",
-    "http://localhost:5173",
+    "*"
 ]
 
 app.add_middleware(
